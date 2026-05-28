@@ -63,6 +63,15 @@ Optional CLI usage in another terminal:
 pnpm --filter expo-audit dev --help
 ```
 
+Run audit commands against the bundled sample Expo app:
+
+```bash
+pnpm --filter expo-audit exec tsx src/index.ts scan --path examples/expo-sample-app
+pnpm --filter expo-audit exec tsx src/index.ts bundle --path examples/expo-sample-app
+pnpm --filter expo-audit exec tsx src/index.ts doctor --path examples/expo-sample-app
+pnpm --filter expo-audit exec tsx src/index.ts profile
+```
+
 ## Cloud
 
 1. Build and push:

@@ -18,6 +18,11 @@ Production-grade SaaS platform for auditing, profiling, and improving Expo React
 
 - Project details structure and AI agent purpose: [docs/PROJECT_DETAILS_STRUCTURE.md](docs/PROJECT_DETAILS_STRUCTURE.md)
 
+## Example Expo Project for Testing
+
+- Sample app path: [examples/expo-sample-app](examples/expo-sample-app)
+- Sample app guide: [examples/expo-sample-app/README.md](examples/expo-sample-app/README.md)
+
 ## Quick Start
 
 1. Install dependencies:
