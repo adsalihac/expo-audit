@@ -15,6 +15,13 @@ const features = [
 export function LandingSections() {
   return (
     <section className="mx-auto max-w-7xl px-6 pb-20">
+      <div className="mb-10 flex items-end justify-between gap-6">
+        <div>
+          <p className="text-xs uppercase tracking-[0.16em] text-white/45">Platform Capabilities</p>
+          <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight text-white">Everything needed for Expo performance operations</h2>
+        </div>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {features.map((feature, i) => (
           <motion.div
@@ -23,7 +30,7 @@ export function LandingSections() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
-            className="glass rounded-[24px] p-5"
+            className="dev-panel rounded-[22px] p-5"
           >
             <feature.icon size={18} className="text-indigo-300" />
             <h3 className="mt-3 font-heading text-lg font-semibold">{feature.title}</h3>
@@ -33,19 +40,35 @@ export function LandingSections() {
       </div>
 
       <div className="mt-12 grid gap-4 lg:grid-cols-2">
-        <div className="glass rounded-[24px] p-6">
+        <div className="dev-panel rounded-[24px] p-6">
           <h3 className="font-heading text-xl font-semibold">CLI Workflow</h3>
-          <pre className="mt-4 overflow-auto rounded-2xl border border-white/10 bg-black/30 p-4 font-mono text-xs text-white/80">
+          <pre className="mt-4 overflow-auto rounded-2xl border border-white/10 bg-black/35 p-4 font-mono text-xs text-white/80">
 {`npx expo-audit scan\nexpo-audit bundle --json\nexpo-audit profile --platform ios\nexpo-audit upload --token $AUDIT_TOKEN`}
           </pre>
         </div>
-        <div className="glass rounded-[24px] p-6">
+        <div className="dev-panel rounded-[24px] p-6">
           <h3 className="font-heading text-xl font-semibold">AI Recommendations Preview</h3>
           <ul className="mt-4 space-y-3 text-sm text-white/70">
             <li>FlashList renderItem is recreated on each render; memoize callback.</li>
             <li>Analytics module adds 280KB to bundle; lazy load after first screen paint.</li>
             <li>Splash duration exceeds target by 640ms due to eager font and asset loading.</li>
           </ul>
+        </div>
+      </div>
+
+      <div className="mt-12 rounded-2xl border border-white/10 bg-black/20 p-6 backdrop-blur">
+        <div className="grid gap-6 lg:grid-cols-[1.3fr,1fr] lg:items-center">
+          <div>
+            <h3 className="font-heading text-2xl font-semibold text-white">Designed for performance-driven mobile teams</h3>
+            <p className="mt-2 max-w-2xl text-sm text-white/70">
+              Block regressions in CI, benchmark by device tier, and ship predictable Expo releases with a tighter developer loop.
+            </p>
+          </div>
+          <div className="space-y-2 text-sm text-white/70">
+            <p>Works with Expo Router, Hermes, Metro, EAS Build, and Expo Updates.</p>
+            <p>Runs locally first, then scales to team dashboards and PR gates.</p>
+            <p>AI recommendations stay actionable, short, and architecture-aware.</p>
+          </div>
         </div>
       </div>
     </section>

@@ -4,13 +4,13 @@
 
 :root {
   --bg: #09090b;
-  --surface: #111113;
-  --panel: rgba(255, 255, 255, 0.03);
-  --panel-border: rgba(255, 255, 255, 0.08);
+  --surface: #0f1016;
+  --panel: rgba(255, 255, 255, 0.035);
+  --panel-border: rgba(255, 255, 255, 0.1);
   --text: #f5f7ff;
-  --muted: #9aa3b8;
-  --indigo: #5b72ff;
-  --blue: #4fa7ff;
+  --muted: #9ba3b7;
+  --indigo: #6a7dff;
+  --blue: #53b4ff;
   --success: #71f29f;
   --danger: #ff6e7f;
 }
@@ -28,15 +28,52 @@ body {
 }
 
 body {
-  font-family: Inter, sans-serif;
+  font-family: "IBM Plex Sans", Inter, sans-serif;
   background-image: radial-gradient(circle at 15% 15%, rgba(91, 114, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(79, 167, 255, 0.1), transparent 30%),
-    linear-gradient(130deg, #09090b 0%, #0f1220 45%, #09090b 100%);
+    radial-gradient(circle at 82% 24%, rgba(83, 180, 255, 0.14), transparent 36%),
+    linear-gradient(130deg, #09090b 0%, #0d1224 42%, #09090b 100%);
   min-height: 100vh;
+  letter-spacing: -0.01em;
 }
 
 .glass {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   backdrop-filter: blur(14px);
+}
+
+.developer-grid {
+  position: relative;
+}
+
+.developer-grid::before {
+  content: none;
+}
+
+.orb {
+  display: none;
+}
+
+.orb-left {
+  background: rgba(106, 125, 255, 0.2);
+  top: -8rem;
+  left: -8rem;
+}
+
+.orb-right {
+  background: rgba(83, 180, 255, 0.16);
+  top: 10rem;
+  right: -8rem;
+}
+
+.dev-panel {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 80px rgba(4, 7, 16, 0.45);
+  backdrop-filter: blur(16px);
+}
+
+.metric-chip {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
 }
