@@ -1,0 +1,32 @@
+name: Performance Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  expo-performance-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile=false
+      - name: Run local bundle + profile
+        run: |
+          pnpm --filter expo-audit build
+          node tools/cli/dist/index.js bundle --path . > bundle-report.json
+          node tools/cli/dist/index.js profile > profile-report.json
+      - name: Upload to dashboard
+        env:
+          AUDIT_API_URL: ${{ secrets.AUDIT_API_URL }}
+          AUDIT_TOKEN: ${{ secrets.AUDIT_TOKEN }}
+          AUDIT_PROJECT_ID: ${{ secrets.AUDIT_PROJECT_ID }}
+        run: |
+          node tools/cli/dist/index.js upload --path . --api-url "$AUDIT_API_URL" --token "$AUDIT_TOKEN" --project-id "$AUDIT_PROJECT_ID"

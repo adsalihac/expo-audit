@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expo-audit-web
+  namespace: expo-audit
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: expo-audit-web
+  template:
+    metadata:
+      labels:
+        app: expo-audit-web
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/your-org/expo-audit-web:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: expo-audit-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expo-audit-web
+  namespace: expo-audit
+spec:
+  selector:
+    app: expo-audit-web
+  ports:
+    - port: 80
+      targetPort: 3000

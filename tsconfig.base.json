@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@expo-audit/types": ["packages/types/src"],
+      "@expo-audit/analytics-engine": ["packages/analytics-engine/src"],
+      "@expo-audit/expo-intelligence": ["packages/expo-intelligence/src"],
+      "@expo-audit/ai-recommendations": ["packages/ai-recommendations/src"],
+      "@expo-audit/queue": ["packages/queue/src"],
+      "@expo-audit/database": ["packages/database/src"],
+      "@expo-audit/ui": ["packages/ui/src"]
+    }
+  }
+}

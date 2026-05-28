@@ -1,0 +1,234 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum BuildStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum AuditStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SLACK
+  DISCORD
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  email              String         @unique
+  name               String?
+  imageUrl           String?
+  authProvider       String
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  memberships        TeamMember[]
+  recommendations    Recommendation[] @relation("RecommendationAuthor")
+  notifications      Notification[]
+  auditLogs          AuditLog[]
+}
+
+model Team {
+  id                 String         @id @default(cuid())
+  name               String
+  slug               String         @unique
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  members            TeamMember[]
+  projects           Project[]
+}
+
+model TeamMember {
+  id                 String         @id @default(cuid())
+  teamId             String
+  userId             String
+  role               UserRole       @default(MEMBER)
+  createdAt          DateTime       @default(now())
+  team               Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model Project {
+  id                 String              @id @default(cuid())
+  teamId             String
+  name               String
+  slug               String
+  repoUrl            String?
+  expoSdkVersion     String
+  hermesEnabled      Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  team               Team                @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  builds             Build[]
+  auditReports       AuditReport[]
+  bundleReports      BundleReport[]
+  ciReports          CIReport[]
+  otaUpdates         OTAUpdate[]
+  deviceBenchmarks   DeviceBenchmark[]
+  performanceMetrics PerformanceMetric[]
+
+  @@unique([teamId, slug])
+}
+
+model Build {
+  id                 String         @id @default(cuid())
+  projectId          String
+  easBuildId         String?
+  status             BuildStatus    @default(QUEUED)
+  branch             String
+  commitSha          String
+  buildProfile       String?
+  platform           String
+  durationSec        Int?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  project            Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model AuditReport {
+  id                 String            @id @default(cuid())
+  projectId          String
+  status             AuditStatus       @default(PENDING)
+  score              Int?
+  payload            Json
+  issues             Json
+  summary            String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  project            Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  recommendations    Recommendation[]
+  performanceMetrics PerformanceMetric[]
+  notifications      Notification[]
+}
+
+model PerformanceMetric {
+  id                 String       @id @default(cuid())
+  projectId          String
+  auditReportId      String?
+  metricType         String
+  platform           String
+  value              Float
+  unit               String
+  timestamp          DateTime     @default(now())
+  project            Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  auditReport        AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
+
+  @@index([projectId, metricType, timestamp])
+}
+
+model BundleReport {
+  id                 String       @id @default(cuid())
+  projectId          String
+  totalSizeKb        Float
+  duplicateDeps      Json
+  largePackages      Json
+  assetWarnings      Json
+  createdAt          DateTime     @default(now())
+  project            Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model DeviceBenchmark {
+  id                 String       @id @default(cuid())
+  projectId          String
+  deviceTier         String
+  platform           String
+  startupMs          Float
+  avgJsFps           Float
+  avgUiFps           Float
+  memoryMb           Float
+  cpuPercent         Float
+  createdAt          DateTime     @default(now())
+  project            Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, deviceTier, platform])
+}
+
+model Recommendation {
+  id                 String       @id @default(cuid())
+  auditReportId      String
+  authorId           String?
+  severity           String
+  title              String
+  rationale          String
+  actionItems        Json
+  createdAt          DateTime     @default(now())
+  auditReport        AuditReport  @relation(fields: [auditReportId], references: [id], onDelete: Cascade)
+  author             User?        @relation("RecommendationAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+}
+
+model OTAUpdate {
+  id                 String       @id @default(cuid())
+  projectId          String
+  updateId           String
+  runtimeVersion     String
+  branch             String
+  updateSizeKb       Float
+  rolloutPercent     Float?
+  createdAt          DateTime     @default(now())
+  project            Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id                 String              @id @default(cuid())
+  userId             String?
+  auditReportId      String?
+  channel            NotificationChannel
+  title              String
+  message            String
+  isRead             Boolean             @default(false)
+  createdAt          DateTime            @default(now())
+  user               User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  auditReport        AuditReport?        @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
+}
+
+model CIReport {
+  id                 String       @id @default(cuid())
+  projectId          String
+  provider           String
+  commitSha          String
+  branch             String
+  buildUrl           String?
+  status             String
+  regressionDetected Boolean      @default(false)
+  score              Int?
+  payload            Json
+  createdAt          DateTime     @default(now())
+  project            Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id                 String       @id @default(cuid())
+  actorId            String?
+  action             String
+  targetType         String
+  targetId           String
+  metadata           Json?
+  createdAt          DateTime     @default(now())
+  actor              User?        @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+}

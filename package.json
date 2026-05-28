@@ -1,0 +1,29 @@
+{
+  "name": "expo-app-performance-auditor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Production-grade SaaS platform for Expo React Native performance intelligence",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "DATABASE_URL=postgresql://expoaudit:expoaudit@localhost:5432/expo_audit REDIS_URL=redis://localhost:6379 turbo run dev --parallel --filter=@expo-audit/web --filter=@expo-audit/api --filter=@expo-audit/worker",
+    "dev:cli": "pnpm --filter expo-audit dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,yml,yaml}\"",
+    "db:generate": "pnpm --filter @expo-audit/database db:generate",
+    "db:migrate": "pnpm --filter @expo-audit/database db:migrate"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/semver": "^7.7.1",
+    "eslint": "^9.16.0",
+    "prettier": "^3.4.1",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expo-audit-worker
+  namespace: expo-audit
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: expo-audit-worker
+  template:
+    metadata:
+      labels:
+        app: expo-audit-worker
+    spec:
+      containers:
+        - name: worker
+          image: ghcr.io/your-org/expo-audit-worker:latest
+          envFrom:
+            - secretRef:
+                name: expo-audit-secrets
