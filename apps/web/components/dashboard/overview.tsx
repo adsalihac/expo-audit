@@ -27,12 +27,12 @@ export function DashboardOverview() {
       <div className="grid gap-4 md:grid-cols-4">
         {[
           ["Performance Score", "92", "text-success"],
-          ["Cold Start", "2.3s", "text-white"],
-          ["Bundle Size", "1.9MB", "text-white"],
+          ["Cold Start", "2.3s", "text-slate-900"],
+          ["Bundle Size", "1.9MB", "text-slate-900"],
           ["Regressions", "0", "text-success"],
         ].map(([label, value, cls]) => (
           <div key={label} className="dev-panel rounded-[18px] p-4">
-            <p className="text-[11px] uppercase tracking-[0.12em] text-white/55">{label}</p>
+            <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
             <p className={`mt-2 font-mono text-2xl ${cls}`}>{value}</p>
           </div>
         ))}
@@ -40,7 +40,7 @@ export function DashboardOverview() {
 
       <div className="grid gap-4 xl:grid-cols-[1fr,1fr,0.8fr]">
         <div className="dev-panel rounded-[20px] p-4">
-          <h3 className="font-heading text-sm font-semibold text-white/80">Score Trend</h3>
+          <h3 className="font-heading text-sm font-semibold text-slate-800">Score Trend</h3>
           <div className="mt-4 h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={scoreSeries}>
@@ -50,8 +50,8 @@ export function DashboardOverview() {
                     <stop offset="100%" stopColor="#5b72ff" stopOpacity={0.05} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="day" stroke="#6f7892" tickLine={false} axisLine={false} />
-                <YAxis stroke="#6f7892" tickLine={false} axisLine={false} />
+                <XAxis dataKey="day" stroke="#64748b" tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" tickLine={false} axisLine={false} />
                 <Tooltip />
                 <Area type="monotone" dataKey="score" stroke="#9db3ff" fill="url(#score)" strokeWidth={2} />
               </AreaChart>
@@ -60,12 +60,12 @@ export function DashboardOverview() {
         </div>
 
         <div className="dev-panel rounded-[20px] p-4">
-          <h3 className="font-heading text-sm font-semibold text-white/80">Realtime FPS</h3>
+          <h3 className="font-heading text-sm font-semibold text-slate-800">Realtime FPS</h3>
           <div className="mt-4 h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={fpsSeries}>
-                <XAxis dataKey="minute" stroke="#6f7892" tickLine={false} axisLine={false} />
-                <YAxis stroke="#6f7892" tickLine={false} axisLine={false} />
+                <XAxis dataKey="minute" stroke="#64748b" tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" tickLine={false} axisLine={false} />
                 <Tooltip />
                 <Line type="monotone" dataKey="js" stroke="#71f29f" strokeWidth={2.2} dot={false} />
                 <Line type="monotone" dataKey="ui" stroke="#4fa7ff" strokeWidth={2.2} dot={false} />
@@ -75,17 +75,17 @@ export function DashboardOverview() {
         </div>
 
         <div className="dev-panel rounded-[20px] p-4">
-          <h3 className="font-heading text-sm font-semibold text-white/80">Build Activity</h3>
+          <h3 className="font-heading text-sm font-semibold text-slate-800">Build Activity</h3>
           <div className="mt-4 space-y-3 text-sm">
             {[
               ["main", "Audit score +4", "2m ago"],
               ["release/1.4.2", "Bundle -180KB", "17m ago"],
               ["feature/paywall", "FPS stable", "44m ago"],
             ].map(([branch, msg, when]) => (
-              <div key={`${branch}-${when}`} className="rounded-xl border border-white/10 bg-white/[0.02] p-3">
-                <div className="font-mono text-xs text-indigo-200">{branch}</div>
-                <div className="mt-1 text-white/85">{msg}</div>
-                <div className="mt-1 text-xs text-white/45">{when}</div>
+              <div key={`${branch}-${when}`} className="rounded-xl border border-slate-200 bg-white p-3">
+                <div className="font-mono text-xs text-indigo-600">{branch}</div>
+                <div className="mt-1 text-slate-800">{msg}</div>
+                <div className="mt-1 text-xs text-slate-500">{when}</div>
               </div>
             ))}
           </div>
